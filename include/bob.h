@@ -198,7 +198,6 @@ struct BobInterpreter {
     BobValue stringObject;          /* object for the String type */
     BobValue integerObject;         /* object for the Integer type */
     BobValue floatObject;           /* object for the Float type */
-    BobValue matrixObject;          /* object for the Matrix type */
     BobValue symbols;               /* symbol table */
     BobSymbolBlock *symbolSpace;    /* current symbol block */
     void (*errorHandler)(BobInterpreter *c,int code,va_list ap);
@@ -356,26 +355,6 @@ typedef struct {
 #define BobSetFloatValue(o,v)           (((BobFloat *)o)->value = (v))
 BobValue BobMakeFloat(BobInterpreter *c,BobFloatType value);
 extern BobDispatch BobFloatDispatch;
-
-/* MATRIX */
-
-typedef struct {
-    BobDispatch *dispatch;
-    BobIntegerType nRows;
-    BobIntegerType nCols;
-    BobFloatType *rows[1];
-} BobMatrix;
-
-#define BobMatrixP(o)                   BobIsBaseType(o,&BobMatrixDispatch)
-#define BobMatrixRows(o)                (((BobMatrix *)o)->nRows)
-#define BobMatrixCols(o)                (((BobMatrix *)o)->nCols)
-#define BobMatrixElement(o,i,j)         (((BobMatrix *)o)->rows[i][j])
-#define BobSetMatrixElement(o,i,j,v)    (((BobMatrix *)o)->rows[i][j] = (v))
-#define BobMatrixAddress(o)             (((BobMatrix *)o)->rows[0]) 
-BobValue BobMakeMatrix(BobInterpreter *c,BobIntegerType nRows,BobIntegerType nCols);
-BobValue BobMatrixUnaryOp(BobInterpreter *c,int op,BobValue p1);
-BobValue BobMatrixBinaryOp(BobInterpreter *c,int op,BobValue p1,BobValue p2);
-extern BobDispatch BobMatrixDispatch;
 
 /* STRING */
 
@@ -858,9 +837,6 @@ void BobInitInteger(BobInterpreter *c);
 
 /* bobfloat.c prototypes */
 void BobInitFloat(BobInterpreter *c);
-
-/* bobmatrix.c prototypes */
-void BobInitMatrix(BobInterpreter *c);
 
 /* bobfile.c prototypes */
 void BobInitFile(BobInterpreter *c);

@@ -25,7 +25,6 @@ $(OBJDIR)/bobheap.o \
 $(OBJDIR)/bobint.o \
 $(OBJDIR)/bobinteger.o \
 $(OBJDIR)/bobmath.o \
-$(OBJDIR)/bobmatrix.o \
 $(OBJDIR)/bobmethod.o \
 $(OBJDIR)/bobobject.o \
 $(OBJDIR)/bobparse.o \

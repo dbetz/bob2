@@ -82,9 +82,6 @@ static void do_function(BobCompiler *c,PVAL *pv);
 static void do_literal(BobCompiler *c,PVAL *pv);
 static void do_literal_symbol(BobCompiler *c,PVAL *pv);
 static void do_literal_vector(BobCompiler *c,PVAL *pv);
-#ifdef BOB_INCLUDE_FLOAT_SUPPORT
-static void do_literal_matrix(BobCompiler *c,PVAL *pv);
-#endif
 static void do_literal_object(BobCompiler *c,PVAL *pv);
 static void do_new_object(BobCompiler *c,PVAL *pv);
 static void do_call(BobCompiler *c,PVAL *pv);
@@ -1496,11 +1493,6 @@ static void do_literal(BobCompiler *c,PVAL *pv)
     case '[':           /* vector */
         do_literal_vector(c,pv);
         break;
-#ifdef BOB_INCLUDE_FLOAT_SUPPORT
-    case T_MATBEGIN:    /* matrix */
-        do_literal_matrix(c,pv);
-        break;
-#endif
     case '{':           /* object */
         do_literal_object(c,pv);
         break;
@@ -1535,50 +1527,6 @@ static void do_literal_vector(BobCompiler *c,PVAL *pv)
     putcbyte(c,BobOpNEWVECTOR);
     pv->fcn = NULL;
 }
-
-/* do_literal_matrix - parse a literal matrix */
-#ifdef BOB_INCLUDE_FLOAT_SUPPORT
-static void do_literal_matrix(BobCompiler *c,PVAL *pv)
-{
-    BobIntegerType nRows = 0;
-    BobIntegerType nCols = 0;
-    int tkn;
-    if ((tkn = BobToken(c)) != T_MATEND) {
-        BobSaveToken(c,tkn);
-        ++nRows;
-        for (;;) {
-            BobIntegerType col;
-            if (nRows == 1)
-                ++nCols;
-            else if (++col > nCols)
-                BobParseError(c,"Too many values in row");
-            do_init_expr(c);
-            putcbyte(c,BobOpPUSH);
-            if ((tkn = BobToken(c)) == ';' || tkn == T_MATEND) {
-                if (nRows > 1 && col < nCols) {
-                    do_lit_float(c,0.0);
-                    while (++col <= nCols)
-                        putcbyte(c,BobOpPUSH);
-                }
-                if (tkn == ';') {
-                    ++nRows;
-                    col = 0;
-                }
-                else
-                    break;
-            }
-            else if (tkn != ',')
-                BobSaveToken(c,tkn);
-        }
-        require(c,tkn,T_MATEND);
-    }
-    do_lit_integer(c,nRows);
-    putcbyte(c,BobOpPUSH);
-    do_lit_integer(c,nCols);
-    putcbyte(c,BobOpNEWMATRIX);
-    pv->fcn = NULL;
-}
-#endif
 
 /* do_literal_object - parse a literal object */
 static void do_literal_object(BobCompiler *c,PVAL *pv)

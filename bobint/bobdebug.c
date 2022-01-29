@@ -74,7 +74,6 @@ OTDEF otab[] = {
 {       BobOpARGSGE,    "ARGSGE",       FMT_BYTE        },
 {       BobOpPUSHSCOPE, "PUSHSCOPE",    FMT_NONE        },
 {       BobOpTHROW,     "THROW",        FMT_NONE        },
-{       BobOpNEWMATRIX, "NEWMATRIX",    FMT_NONE        },
 {0,0,0}
 };
 

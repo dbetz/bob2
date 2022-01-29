@@ -569,30 +569,6 @@ static void Execute(BobInterpreter *c)
             while (--n >= 0)
                 *--p = BobPop(c);
             break;
-#ifdef BOB_INCLUDE_FLOAT_SUPPORT
-        case BobOpNEWMATRIX:
-            {
-                BobFloatType *p;
-                p1 = BobPop(c);
-                if (!BobIntegerP(p1)) BobTypeError(c,c->val);
-                if (!BobIntegerP(c->val)) BobTypeError(c,c->val);
-                m = BobIntegerValue(p1);
-                n = BobIntegerValue(c->val);
-                c->val = BobMakeMatrix(c,m,n);
-                n *= m; /* total number of matrix elements */
-                p = BobMatrixAddress(c->val) + n;
-                while (--n >= 0) {
-                    BobValue val = BobPop(c);
-                    if (BobFloatP(val))
-                        *--p = BobFloatValue(val);
-                    else if (BobIntegerP(val))
-                        *--p = (BobFloatType)BobIntegerValue(val);
-                    else
-                        BobTypeError(c,val);
-                }
-            }
-            break;
-#endif
         case BobOpTHROW:
             break;
         default:
@@ -606,13 +582,6 @@ static void Execute(BobInterpreter *c)
 static void UnaryOp(BobInterpreter *c,int op)
 {
     BobValue p1 = c->val;
-
-#ifdef BOB_INCLUDE_FLOAT_SUPPORT
-    if (BobMatrixP(p1)) {
-        c->val = BobMatrixUnaryOp(c,op,p1);
-        return;
-    }
-#endif
 
     if (BobIntegerP(p1)) {
         BobIntegerType i1 = BobIntegerValue(p1);
@@ -677,13 +646,6 @@ static void BinaryOp(BobInterpreter *c,int op)
 {
     BobValue p1 = BobPop(c);
     BobValue p2 = c->val;
-
-#ifdef BOB_INCLUDE_FLOAT_SUPPORT
-    if (BobMatrixP(p1) || BobMatrixP(p2)) {
-        c->val = BobMatrixBinaryOp(c,op,p1,p2);
-        return;
-    }
-#endif
     
     if (BobIntegerP(p1) && BobIntegerP(p2)) {
         BobIntegerType i1 = BobIntegerValue(p1);

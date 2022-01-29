@@ -102,7 +102,6 @@ BobInterpreter *BobMakeInterpreter(long size,long expandSize,long stackSize)
     BobInitInteger(c);
 #ifdef BOB_INCLUDE_FLOAT_SUPPORT
     BobInitFloat(c);
-    BobInitMatrix(c);
 #endif
     BobAddTypeSymbols(c);
 
