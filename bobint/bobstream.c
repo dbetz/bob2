@@ -52,7 +52,7 @@ static int DisplayVectorValue(BobInterpreter *c,BobValue val,BobStream *s)
 /* DisplayStringValue - display a string value */
 static int DisplayStringValue(BobValue val,BobStream *s)
 {
-    unsigned char *p = BobStringAddress(val);
+    char *p = BobStringAddress(val);
     long size = BobStringSize(val);
     while (--size >= 0)
         if (BobStreamPutC(*p++,s) == BobStreamEOF)
@@ -137,7 +137,7 @@ static BobStreamDispatch stringDispatch = {
 };
 
 /* BobInitStringStream - initialize a string input stream */
-BobStream *BobInitStringStream(BobInterpreter *c,BobStringStream *s,unsigned char *buf,long len)
+BobStream *BobInitStringStream(BobInterpreter *c,BobStringStream *s,char *buf,long len)
 {
     s->d = &stringDispatch;
     s->buf = NULL;
@@ -147,11 +147,11 @@ BobStream *BobInitStringStream(BobInterpreter *c,BobStringStream *s,unsigned cha
 }
 
 /* BobMakeStringStream - make a string input stream */
-BobStream *BobMakeStringStream(BobInterpreter *c,unsigned char *buf,long len)
+BobStream *BobMakeStringStream(BobInterpreter *c,char *buf,long len)
 {
     BobStringStream *s = NULL;
     if ((s = (BobStringStream *)malloc(sizeof(BobStringStream))) != NULL) {
-        if ((s->buf = (unsigned char *)malloc((size_t)len)) == NULL) {
+        if ((s->buf = (char *)malloc((size_t)len)) == NULL) {
             free((void *)s);
             return NULL;
         }
@@ -200,7 +200,7 @@ static BobStreamDispatch stringOutputDispatch = {
 };
 
 /* BobInitStringOutputStream - initialize a string output stream */
-BobStream *BobInitStringOutputStream(BobInterpreter *c,BobStringOutputStream *s,unsigned char *buf,long len)
+BobStream *BobInitStringOutputStream(BobInterpreter *c,BobStringOutputStream *s,char *buf,long len)
 {
     s->d = &stringOutputDispatch;
     s->buf = buf;

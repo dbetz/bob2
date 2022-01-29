@@ -48,7 +48,7 @@ static long SymbolSize(BobValue obj);
 static BobValue SymbolCopy(BobInterpreter *c,BobValue obj);
 static BobIntegerType SymbolHash(BobValue obj);
 
-static BobValue MakeSymbol(BobInterpreter *c,unsigned char *printName,int length,BobIntegerType hashValue);
+static BobValue MakeSymbol(BobInterpreter *c,char *printName,int length,BobIntegerType hashValue);
 static BobValue AllocateSymbolSpace(BobInterpreter *c,long size);
 
 BobDispatch BobSymbolDispatch = {
@@ -107,13 +107,13 @@ static BobIntegerType SymbolHash(BobValue obj)
 }
 
 /* BobMakeSymbol - make a new symbol */
-BobValue BobMakeSymbol(BobInterpreter *c,unsigned char *printName,int length)
+BobValue BobMakeSymbol(BobInterpreter *c,char *printName,int length)
 {
     return MakeSymbol(c,printName,length,BobHashString(printName,length));
 }
 
 /* MakeSymbol - make a new symbol */
-static BobValue MakeSymbol(BobInterpreter *c,unsigned char *printName,int length,BobIntegerType hashValue)
+static BobValue MakeSymbol(BobInterpreter *c,char *printName,int length,BobIntegerType hashValue)
 {
     long allocSize = sizeof(BobSymbol) + BobRoundSize(length - 1);
     BobValue sym = AllocateSymbolSpace(c,allocSize);
@@ -133,11 +133,11 @@ BobValue BobIntern(BobInterpreter *c,BobValue printName)
 /* BobInternCString - intern a symbol given its print name as a c string */
 BobValue BobInternCString(BobInterpreter *c,char *printName)
 {
-    return BobInternString(c,(unsigned char *)printName,strlen(printName));
+    return BobInternString(c,printName,strlen(printName));
 }
 
 /* BobInternString - intern a symbol given its print name as a string/length */
-BobValue BobInternString(BobInterpreter *c,unsigned char *printName,int length)
+BobValue BobInternString(BobInterpreter *c,char *printName,int length)
 {
     BobIntegerType hashValue = BobHashString(printName,length);
     BobIntegerType i;

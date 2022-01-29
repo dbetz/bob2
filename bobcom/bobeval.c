@@ -80,7 +80,7 @@ static BobValue BIF_CompileFile(BobInterpreter *c)
 /* BobEvalString - evaluate a string */
 BobValue BobEvalString(BobScope *scope,char *str)
 {
-    BobStream *s = BobMakeStringStream(scope->c,(unsigned char *)str,strlen(str));
+    BobStream *s = BobMakeStringStream(scope->c,str,strlen(str));
     if (s) {
         BobValue value = BobEvalStream(scope,s);
         BobCloseStream(s);

@@ -114,7 +114,7 @@ static void RestoreInterpreterState(BobInterpreter *c)
     c->fp = s->fp;
     c->env = s->env;
     if ((c->code = s->code) != NULL) {
-        c->cbase = BobStringAddress(BobCompiledCodeBytecodes(c->code));
+        c->cbase = (unsigned char *)BobStringAddress(BobCompiledCodeBytecodes(c->code));
         c->pc = c->cbase + s->pcoff;
     }
     c->savedState = s->next;
@@ -853,7 +853,7 @@ static int Call(BobInterpreter *c,FrameDispatch *d,int argc)
 
     /* get the code object */
     code = BobMethodCode(method);
-    cbase = pc = BobStringAddress(BobCompiledCodeBytecodes(code));
+    cbase = pc = (unsigned char *)BobStringAddress(BobCompiledCodeBytecodes(code));
     
     /* parse the argument frame instruction */
     rflag = *pc++ == BobOpAFRAMER;
@@ -939,7 +939,7 @@ static void CallRestore(BobInterpreter *c)
     c->currentScope.globals = frame->globals;
     c->env = frame->env;
     if ((c->code = frame->code) != NULL) {
-        c->cbase = BobStringAddress(BobCompiledCodeBytecodes(c->code));
+        c->cbase = (unsigned char *)BobStringAddress(BobCompiledCodeBytecodes(c->code));
         c->pc = c->cbase + frame->pcOffset;
     }
     c->argc = frame->argc;
@@ -1200,9 +1200,9 @@ static int CompareObjects(BobInterpreter *c,BobValue obj1,BobValue obj2)
 /* CompareStrings - compare two strings */
 static int CompareStrings(BobValue str1,BobValue str2)
 {
-    unsigned char *p1 = BobStringAddress(str1);
+    char *p1 = BobStringAddress(str1);
     long len1 = BobStringSize(str1);
-    unsigned char *p2 = BobStringAddress(str2);
+    char *p2 = BobStringAddress(str2);
     long len2 = BobStringSize(str2);
     while (len1 > 0 && len2 > 0 && *p1++ == *p2++)
         --len1, --len2;
@@ -1214,7 +1214,7 @@ static int CompareStrings(BobValue str1,BobValue str2)
 /* ConcatenateStrings - concatenate two strings */
 static BobValue ConcatenateStrings(BobInterpreter *c,BobValue str1,BobValue str2)
 {
-    unsigned char *src,*dst;
+    char *src,*dst;
     long len1 = BobStringSize(str1);
     long len2 = BobStringSize(str2);
     long len = len1 + len2;

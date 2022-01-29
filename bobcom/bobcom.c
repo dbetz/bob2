@@ -172,9 +172,9 @@ static void SetupCompiler(BobCompiler *c)
 {
     c->cbase = c->cptr = c->codebuf;
     c->lbase = c->lptr = 0;
-    c->bsbase = c->bsp = &c->bstack[-1];
-    c->csbase = c->csp = &c->cstack[-1];
-    c->ssbase = c->ssp = &c->sstack[-1];
+    c->bsbase = c->bsp = &c->bstack[0] - 1;
+    c->csbase = c->csp = &c->cstack[0] - 1;
+    c->ssbase = c->ssp = &c->sstack[0] - 1;
     c->arguments = NULL;
     c->blockLevel = 0;
 }
@@ -221,7 +221,7 @@ BobValue BobCompileExpr(BobScope *scope)
     putcbyte(c,BobOpRETURN);
 
     /* make the bytecode array */
-    code = BobMakeString(ic,c->cbase,c->cptr - c->cbase);
+    code = BobMakeString(ic,(char *)c->cbase,c->cptr - c->cbase);
     
     /* make the compiled code object */
     size = c->lptr - c->lbase;
@@ -438,7 +438,7 @@ static void compile_code(BobCompiler *c,char *name)
     putcbyte(c,BobOpRETURN);
 
     /* make the bytecode array */
-    code = BobMakeString(ic,c->cbase,c->cptr - c->cbase);
+    code = BobMakeString(ic,(char *)c->cbase,c->cptr - c->cbase);
     
     /* make the literal vector */
     size = c->lptr - c->lbase;

@@ -21,7 +21,7 @@ static int WriteIntegerValue(BobInterpreter *c,BobValue v,BobStream *s);
 static int WriteFloatValue(BobInterpreter *c,BobValue v,BobStream *s);
 #endif
 static int WriteVector(BobInterpreter *c,BobValue v,BobStream *s);
-static int WriteString(unsigned char *str,BobIntegerType size,BobStream *s);
+static int WriteString(char *str,BobIntegerType size,BobStream *s);
 static int WriteInteger(BobIntegerType n,BobStream *s);
 #ifdef BOB_INCLUDE_FLOAT_SUPPORT
 static int WriteFloat(BobFloatType n,BobStream *s);
@@ -79,7 +79,7 @@ int BobCompileString(BobScope *scope,char *str,BobStream *os)
 {
     BobStream *is;
     int sts;
-    if (!(is = BobMakeStringStream(scope->c,(unsigned char *)str,strlen(str))))
+    if (!(is = BobMakeStringStream(scope->c,str,strlen(str))))
         return FALSE;
     sts = BobCompileStream(scope,is,os);
     BobCloseStream(is);
@@ -243,7 +243,7 @@ static int WriteVector(BobInterpreter *c,BobValue v,BobStream *s)
 }
 
 /* WriteString - write a string value */
-static int WriteString(unsigned char *str,BobIntegerType size,BobStream *s)
+static int WriteString(char *str,BobIntegerType size,BobStream *s)
 {
     if (!WriteInteger(size,s))
         return FALSE;

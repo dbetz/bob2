@@ -65,7 +65,7 @@ BobValue BobMakeHashTable(BobInterpreter *c,long size)
 }
 
 /* BobHashString - compute the hash value for a string */
-BobIntegerType BobHashString(unsigned char *str,int length)
+BobIntegerType BobHashString(char *str,int length)
 {
     register unsigned short hash = -1;
     while (--length >= 0)

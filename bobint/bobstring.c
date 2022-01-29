@@ -215,7 +215,7 @@ static BobValue StringNewInstance(BobInterpreter *c,BobValue parent)
 /* StringPrint - String print handler */
 static int StringPrint(BobInterpreter *c,BobValue val,BobStream *s)
 {
-    unsigned char *p = BobStringAddress(val);
+    char *p = BobStringAddress(val);
     long size = BobStringSize(val);
     if (BobStreamPutC('"',s) == BobStreamEOF)
         return BobStreamEOF;
@@ -238,11 +238,11 @@ static BobIntegerType StringHash(BobValue obj)
 }
 
 /* BobMakeString - make and initialize a new string value */
-BobValue BobMakeString(BobInterpreter *c,unsigned char *data,BobIntegerType size)
+BobValue BobMakeString(BobInterpreter *c,char *data,BobIntegerType size)
 {
     long allocSize = sizeof(BobString) + BobRoundSize(size + 1); /* space for zero terminator */
     BobValue new = BobAllocate(c,allocSize);
-    unsigned char *p = BobStringAddress(new);
+    char *p = BobStringAddress(new);
     BobSetDispatch(new,&BobStringDispatch);
     BobSetStringSize(new,size);
     if (data)
@@ -256,5 +256,5 @@ BobValue BobMakeString(BobInterpreter *c,unsigned char *data,BobIntegerType size
 /* BobMakeCString - make a string value from a C string */
 BobValue BobMakeCString(BobInterpreter *c,char *str)
 {
-    return BobMakeString(c,(unsigned char *)str,(BobIntegerType)strlen(str));
+    return BobMakeString(c,str,(BobIntegerType)strlen(str));
 }

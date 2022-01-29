@@ -241,7 +241,7 @@ static int ReadStringValue(BobInterpreter *c,BobValue *pv,BobStream *s)
     if (!ReadInteger(&size,s))
         return FALSE;
     *pv = BobMakeString(c,NULL,size);
-    for (p = BobStringAddress(*pv); --size >= 0; ) {
+    for (p = (unsigned char *)BobStringAddress(*pv); --size >= 0; ) {
         int ch = BobStreamGetC(s);
         if (ch == BobStreamEOF)
             return FALSE;

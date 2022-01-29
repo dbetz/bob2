@@ -97,15 +97,15 @@ int BobDecodeInstruction(BobInterpreter *c,BobValue code,int lc,BobStream *strea
     OTDEF *op;
 
     /* get bytecode pointer for this instruction and the method name */
-    cp = BobStringAddress(BobCompiledCodeBytecodes(code)) + lc;
+    cp = (unsigned char *)BobStringAddress(BobCompiledCodeBytecodes(code)) + lc;
     name = BobCompiledCodeName(code);
     
     /* show the address and opcode */
     if (BobStringP(name)) {
-        unsigned char *data = BobStringAddress(name);
+        char *data = BobStringAddress(name);
         long size = BobStringSize(name);
         if (size > 32) size = 32;
-        strncpy(buf,(char *)data,(size_t)size);
+        strncpy(buf,data,(size_t)size);
         sprintf(&buf[size],":%04x %02x ",lc,*cp);
     }
     else

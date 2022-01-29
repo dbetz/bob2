@@ -323,7 +323,7 @@ extern BobDispatch BobBrokenHeartDispatch;
 
 #define BobSmallIntegerValueP(v)        ((v) >= BobSmallIntegerMin && (v) <= BobSmallIntegerMax)
 #define BobSmallIntegerValue(o)         ((BobIntegerType)o >> 1)
-#define BobMakeSmallInteger(n)          ((BobValue)(((n) << 1) | 1))
+#define BobMakeSmallInteger(n)          ((BobValue)(((BobIntegerType)(n) << 1) | 1))
 
 /* NUMBER */
 
@@ -361,16 +361,16 @@ extern BobDispatch BobFloatDispatch;
 typedef struct {
     BobDispatch *dispatch;
     BobIntegerType size;
-/*  unsigned char data[0]; */
+/*  char data[0]; */
 } BobString;
 
 #define BobStringP(o)                   BobIsType(o,&BobStringDispatch)
 #define BobStringSize(o)                (((BobString *)o)->size)  
 #define BobSetStringSize(o,v)           (((BobString *)o)->size = (v))
-#define BobStringAddress(o)             ((unsigned char *)o + sizeof(BobString))
+#define BobStringAddress(o)             ((char *)o + sizeof(BobString))
 #define BobStringElement(o,i)           (BobStringAddress(o)[i])  
 #define BobSetStringElement(o,i,v)      (BobStringAddress(o)[i] = (v))  
-BobValue BobMakeString(BobInterpreter *c,unsigned char *data,BobIntegerType size);
+BobValue BobMakeString(BobInterpreter *c,char *data,BobIntegerType size);
 BobValue BobMakeCString(BobInterpreter *c,char *str);
 extern BobDispatch BobStringDispatch;
 
@@ -380,17 +380,17 @@ typedef struct {
     BobDispatch *dispatch;
     BobIntegerType hashValue;
     int printNameLength;
-    unsigned char printName[1];
+    char printName[1];
 } BobSymbol;
 
 #define BobSymbolP(o)                   BobIsType(o,&BobSymbolDispatch)
 #define BobSymbolPrintName(o)           (((BobSymbol *)o)->printName)
 #define BobSymbolPrintNameLength(o)     (((BobSymbol *)o)->printNameLength)
 #define BobSymbolHashValue(o)           (((BobSymbol *)o)->hashValue)
-BobValue BobMakeSymbol(BobInterpreter *c,unsigned char *printName,int length);
+BobValue BobMakeSymbol(BobInterpreter *c,char *printName,int length);
 BobValue BobIntern(BobInterpreter *c,BobValue printName);
 BobValue BobInternCString(BobInterpreter *c,char *printName);
-BobValue BobInternString(BobInterpreter *c,unsigned char *printName,int length);
+BobValue BobInternString(BobInterpreter *c,char *printName,int length);
 int BobGlobalValue(BobScope *scope,BobValue sym,BobValue *pValue);
 void BobSetGlobalValue(BobScope *scope,BobValue sym,BobValue value);
 extern BobDispatch BobSymbolDispatch;
@@ -648,17 +648,17 @@ struct BobStream {
 /* string stream structure */
 typedef struct {
     BobStreamDispatch *d;
-    unsigned char *buf;
-    unsigned char *ptr;
+    char *buf;
+    char *ptr;
     long len;
 } BobStringStream;
 
 /* string output stream structure */
 typedef struct {
     BobStreamDispatch *d;
-    unsigned char *buf;
-    unsigned char *ptr;
-    unsigned char *end;
+    char *buf;
+    char *ptr;
+    char *end;
     long len;
 } BobStringOutputStream;
 
@@ -783,7 +783,7 @@ void BobDefaultScan(BobInterpreter *c,BobValue obj);
 BobIntegerType BobDefaultHash(BobValue obj);
 
 /* bobhash.c prototypes */
-BobIntegerType BobHashString(unsigned char *str,int length);
+BobIntegerType BobHashString(char *str,int length);
 
 /* bobtype.c prototypes */
 void BobInitTypes(BobInterpreter *c);
@@ -796,9 +796,9 @@ int BobDisplay(BobInterpreter *c,BobValue val,BobStream *s);
 char *BobStreamGetS(char *buf,int size,BobStream *s);
 int BobStreamPutS(char *str,BobStream *s);
 int BobStreamPrintF(BobStream *s,char *fmt,...);
-BobStream *BobInitStringStream(BobInterpreter *c,BobStringStream *s,unsigned char *buf,long len);
-BobStream *BobMakeStringStream(BobInterpreter *c,unsigned char *buf,long len);
-BobStream *BobInitStringOutputStream(BobInterpreter *c,BobStringOutputStream *s,unsigned char *buf,long len);
+BobStream *BobInitStringStream(BobInterpreter *c,BobStringStream *s,char *buf,long len);
+BobStream *BobMakeStringStream(BobInterpreter *c,char *buf,long len);
+BobStream *BobInitStringOutputStream(BobInterpreter *c,BobStringOutputStream *s,char *buf,long len);
 BobStream *BobMakeIndirectStream(BobInterpreter *c,BobStream **pStream);
 BobStream *BobInitFileStream(BobInterpreter *c,BobFileStream *s,FILE *fp);
 BobStream *BobMakeFileStream(BobInterpreter *c,FILE *fp);

@@ -428,14 +428,14 @@ void BobCollectGarbage(BobInterpreter *c)
     /* fixup cbase and pc */
     if (c->code) {
         long pcoff = c->pc - c->cbase;
-        c->cbase = BobStringAddress(BobCompiledCodeBytecodes(c->code));
+        c->cbase = (unsigned char *)BobStringAddress(BobCompiledCodeBytecodes(c->code));
         c->pc = c->cbase + pcoff;
     }
 
     {
         char buf[128];
         sprintf(buf,
-                " - %d bytes free out of %d, total memory %lu, allocations %lu]\n",
+                " - %ld bytes free out of %ld, total memory %lu, allocations %lu]\n",
                 c->newSpace->top - c->newSpace->free,
                 c->newSpace->top - c->newSpace->base,
                 c->totalMemory,

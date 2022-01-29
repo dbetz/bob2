@@ -162,7 +162,7 @@ void BobParseArguments(BobInterpreter *c,char *fmt,...)
                 }
                 break;
             default:
-                BobCallErrorHandler(c,BobErrBadParseCode,(void *)spec);
+                BobCallErrorHandler(c,BobErrBadParseCode,(void *)(BobIntegerType)spec);
                 break;
             }
         }
