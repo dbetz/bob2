@@ -7,7 +7,7 @@ DIRS=$(BINDIR) $(LIBDIR) $(OBJDIR)
 PROGS=$(BINDIR)/bob2 $(BINDIR)/bobc2 $(BINDIR)/bobi2 $(BINDIR)/bobmerge2
 LIBS=$(LIBDIR)/libbobc.a $(LIBDIR)/libbobi.a
 
-CFLAGS=-I./include -I./bobcom -I./bobint # -DBOB_INCLUDE_FLOAT_SUPPORT
+CFLAGS=-I./include -I./bobcom -I./bobint -DBOB_INCLUDE_FLOAT_SUPPORT
 
 all:	$(DIRS) $(PROGS) $(LIBS)
 

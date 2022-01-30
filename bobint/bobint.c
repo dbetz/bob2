@@ -331,6 +331,7 @@ static void Execute(BobInterpreter *c)
         BobValue p1,p2,*p;
         unsigned int off;
         BobIntegerType n;
+        BobIntegerType m;
         int i;
 
         /*DecodeInstruction(c,c->code,c->pc - c->cbase,c->standardOutput);*/
