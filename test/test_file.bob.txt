@@ -1,6 +1,0 @@
-test_file.bob
-just a line of Prose, for those that like a line of this
-and so once more, sweet words for ears still open
-just a line of Prose, for those that like a line of this
-and so once more, sweet words for ears still open
-[GC - 1038688 bytes free out of 1048576, total memory 2637018, allocations 9]
