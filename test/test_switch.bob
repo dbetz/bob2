@@ -1,0 +1,83 @@
+#! ../bin/bob
+
+// use default
+v = 2;
+switch (v) {
+
+case 1:
+    break;
+
+default:
+    stdout.Display(v, " ", v != 1, " default expect true \n");
+    break;
+}
+
+// use the case, luke use the case
+// also fall through
+v = 1;
+switch (v) {
+    // local compiles but it does not work
+    local ppp = "qqq";
+
+case 1:
+    stdout.Display(ppp, " ", v, " case: expect nil and 1\n");
+
+default:
+    stdout.Display(v, " ", v != 1, " default: expect 1 and nil \n");
+    break;
+}
+
+// try default before case with fall through
+v = 2;
+ppp = "qqq";
+
+switch (v) {
+
+default:
+    stdout.Display(v, " ", v != 1, " default: expect 2 and true \n");
+
+case 1:
+    stdout.Display(ppp, " ", v, " case: expect qqq and 2 \n");
+    break;
+}
+
+// adding do_block has a nice side effecect of adding locals , doees that work ?
+
+v = 1;
+switch (v) {
+
+case 1:
+    stdout.Display( v, "\n");
+    break;
+
+default:
+    stdout.Display(v, " ", v != 1, "default: expect 1 and nil \n");
+    break;
+}
+
+define aaa() { stdout.Display("hellow from func aaa\n"); }
+// aaa();
+v = 1;
+switch (\aaa) {
+
+case 1:
+    stdout.Display( v, "\n");
+    break;
+
+default:
+    stdout.Display(v, " default: expect not [1,2,3]\n");
+    break;
+}
+
+define aaa() { stdout.Display("hellow from func aaa\n"); }
+v = \aaa;
+switch (v) {
+
+case \aaa:
+    stdout.Display( v, "\\aaa \n");
+    break;
+
+default:
+    stdout.Display(v, " default: expect not [1,2,3]\n");
+    break;
+}

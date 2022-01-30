@@ -1,0 +1,9 @@
+test_switch.bob
+2 true default expect true 
+<Object-7f8072162060> 1 case: expect nil and 1
+1 nil default: expect 1 and nil 
+2 true default: expect 2 and true 
+qqq 2 case: expect qqq and 2 
+1
+1 default: expect not [1,2,3]
+aaa\aaa 

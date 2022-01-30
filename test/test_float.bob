@@ -1,0 +1,32 @@
+// testing float after removing matrix
+
+f1 = 0.4;
+f2 = 1e2;
+f3 = -0.0009;
+f4 = -6.99E5;
+
+f0 = f1 + f2 + f3 + f4;
+
+stdout.Display(
+	f1,
+	" ",
+	f2,
+	" ",
+	f3,
+	" ",
+	f4,
+	" ",
+	f0,
+	"\n"
+);
+
+stdout.Display(f1/f2, "\n");
+stdout.Display(f2*f3, "\n");
+stdout.Display("sin(f2/f3): ", sin(f2*f3), "\n");
+stdout.Display("floor: ", floor(f2*f3), "\n");
+
+// ** is not supported but pow, expn and log, log2 log10 is
+stdout.Display("pow(f2,f3): ", pow(f2,f3), "\n");
+stdout.Display("exp(f2): ", exp(f2), "\n");
+stdout.Display("log(f3): ", log(f3), "\n");
+

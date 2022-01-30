@@ -1,0 +1,30 @@
+test_simple.bob
+t1 true
+t2 true
+t3 true
+t4 true
+t5a true
+t5b true
+t6 true
+t7 true
+t8 true
+t9 true
+t10 true
+t11 true
+t12 true
+1 t13 true
+32 t14 true
+true t15 true
+nil t16a true
+true t16b true
+97 97 98 b
+<Method-7f6694d06294> [5,7,8,9] <Object-7f6694d064d8> jj
+[5,9,8,9] <Object-7f6694d064d8> jj
+[5,9,8,9] 8 jj
+[1,2] 8 jj
+jjp<Object-7f6694d06e10> 5
+<Object-7f6694d07048> 5
+<Object-7f6694d07048> 0
+["abc","def"]
+abc
+Class: <Object-7f6694d01120>

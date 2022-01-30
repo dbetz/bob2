@@ -1,0 +1,141 @@
+#! ../bin/bob
+
+// testing literals
+/*
+literal-symbol:
+    "\" identifier
+    .
+
+literal-function:
+    "function" [ name-string ] "(" formal-arguments ")" block
+    .
+
+// needs testing do_function does not check for T_STRING later only T_LITERAL
+name-string:
+    identifier      |
+    literal-string
+    .
+
+literal-vector:
+    \ [ [ expression [ "," expression ] ... ] ]
+    .
+
+literal-object:
+    \ "{" [ object-expression ] [ property-value [ "," property-value ] ... ] "}"
+    .
+*/
+
+// first only test syntax
+
+b = "i am b";
+
+// literal-symbol
+a = \b;
+
+// literal func
+
+// f1 = \function optionalName ( n, m ) { stdout.Display(n, " ", m, "\n"); }; // Error: Syntax error - Expecting a symbol, vector or object literal
+// f2 = \function ( n=8, m="abc" ) { stdout.Display(n, " ", m, "\n"); };
+
+f1 = function optionalName ( n, m ) { stdout.Display(n, " ", m, "\n"); };
+f2 = function ( n=8, m="abc" ) { stdout.Display(n, " ", m, "\n"); };
+f1(6,7);
+f2(7,8);
+
+// the string as name compiles but you cannot refer currently later to the string as name
+f3 = function "optionalString" ( n, m ) { stdout.Display(n, " ", m, "\n"); };
+f4 = function "optionalString2" ( n, m = 0 ) { stdout.Display(n, " ", m, "\n"); };
+f3(8,9);
+f4(8);
+
+optionalName("a", "b");
+
+// only works asfer a modification in bobcom.c:do_function()
+// optionalString("c", "d"); only works if we add  if (tkn == T_IDENTIFIER | tkn == T_STRING ) { at the end of do_function in bobcom.c
+
+z1 = \[ ];
+z2 = \[ a, b, f1, f2 ];
+
+o1 = \{ };
+o1.Show();
+
+o2 = \{
+    a: 9, b: "abc"
+};
+o2.Show();
+
+o3 = \{
+    o2 a2: 9, b2: "abc"
+};
+o3.Show(); // so what is the purpose of the o2 in o3 ?
+
+/*
+o4 = \{
+    f1 a2: 9, b2: "abc" // Error: Can't create an instance
+};
+*/
+
+// o3.o2.Show(); // Error: Object <Object-7fca5a352014> has no property - o2
+stdout.Display(o3.a2, " ", o3.a, "\n"); // o3 gets al the properties of o2
+
+stdout.Display(o2.a, " ", o3.a, "\n"); // and changes of o3 are not propagated to o2 so al properties are copied not referenced
+o3.a = 0;
+stdout.Display(o2.a, " ", o3.a, "\n"); // and changes of o3 are not propagated to o2 so al properties are copied not referenced
+
+// so what can we use var references for
+
+b = "b here , how are you?";
+a = \b;
+
+stdout.Display(a," ",b, "\n");
+
+switch(a) {
+
+case "a":
+	stdout.Display("case \"a\": ", a, "\n");
+	break;
+case \a:
+	stdout.Display("case \\a: ", a, "\n");
+	break;
+case "b":
+	stdout.Display("case \"b\": ", a, "\n");
+	break;
+case \b:
+	stdout.Display("case \\b: ", a, "\n");
+	break;
+default:
+	stdout.Display("default: ", a, "\n");
+	break;
+}
+
+o5 = new Object();
+
+define o5.initialize() {
+    this.a = "a";
+    this.b = 'b';
+    return this;
+}
+o5.Show();
+
+o6 = \{ o5 a2: 7, b2: 9 };
+o6.Show();
+// stdout.Display(o6.a, " ", o6.a2, "\n"); //Error: Object <Object-7fb70132cf90> has no property - a
+
+o7 = new o5();
+o7.Show();
+o8 = \{ o7 a2: 7, b2: 9 };
+stdout.Display(o7.a, " ", o8.a2,"\n");
+stdout.Display(o8.a, " ", o8.a2, "\n");
+
+o8.Show();
+
+
+zz33 = function (a) { return a; };
+zz44 = \zz33;
+stdout.Display(zz33, "\n");
+// result = zz44(6);
+
+// test literal string
+s1 = "this is a string, what can we do with a literal string?";
+
+v1 = \[1,2,3,4];

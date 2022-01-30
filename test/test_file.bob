@@ -1,0 +1,32 @@
+#! ../bin/bob
+
+aName = "justAName.txt";
+
+l1 = "just a line of Prose, for those that like a line of this\n";
+l2 = "and so once more, sweet words for ears still open\n";
+
+stdout.Display(l1);
+stdout.Display(l2);
+
+f1 = new File(aName, "w");
+f1.Display(l1);
+f1.Display(l2);
+f1.Close();
+
+f2 = new File(aName,"r");
+s = new String(1);
+while( ch = f2.GetC() ) {
+	s[0] = ch;
+	stdout.Display(s);
+}
+
+gc();
+
+// and sleep awhile till time has come to die
+i = 0;
+while(true) {
+	if(i > 10000000) {
+		Quit();
+	}
+	i ++;
+}

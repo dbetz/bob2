@@ -1,0 +1,30 @@
+test_closure.bob
+Make two fibo generators
+First pump 10 values from the fibo1 generator
+fibo1 1
+fibo1 1
+fibo1 2
+fibo1 3
+fibo1 5
+fibo1 8
+fibo1 13
+fibo1 21
+fibo1 34
+fibo1 55
+Now pump 5 values from the fibo2 generator
+fibo2 1
+fibo2 1
+fibo2 2
+fibo2 3
+fibo2 5
+Finally, resume pumping values from the fibo1 generator
+fibo1 89
+fibo1 144
+fibo1 233
+fibo1 377
+fibo1 610
+fibo1 987
+fibo1 1597
+fibo1 2584
+fibo1 4181
+fibo1 6765

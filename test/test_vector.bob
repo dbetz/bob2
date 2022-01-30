@@ -1,0 +1,69 @@
+#! ../bin/bob
+
+// Vector
+
+v1 = new Vector;
+stdout.Display(v1, " ", v1.size, "\n");
+v1.size = 7;
+stdout.Display(v1, " ", v1.size, "\n");
+
+v2 = new Vector(5);
+stdout.Display(v2, " ", v2.size, "\n");
+
+v3 = v2.Clone();
+v2[1] = 1;
+v3[3] = 3;
+stdout.Display(v2, " ", v2.size, "\n");
+stdout.Display(v3, " ", v3.size, "\n");
+
+v4 = new Vector();
+stdout.Display(v4, " ", v4.size, "\n");
+v4.Push("a");
+v4.Push("b");
+stdout.Display(v4, " ", v4.size, "\n");
+
+v4 = new Vector();
+v4.PushFront("a");
+v4.PushFront("b");
+stdout.Display(v4, " ", v4.size, "\n");
+
+v = v4.Pop();
+stdout.Display(v4, " ", v, "\n");
+
+// String
+
+s1 = new String;
+stdout.Display(s1, " ", s1.size, "\n");
+
+s2 = new String(5);
+stdout.Display(s2, " ", s2.size, "\n");
+s2[3] = 'a';
+stdout.Display(s2, " ", s2.size, "\n");
+stdout.Display("Index: ", s2.Index('a'), " ", s2, "\n");
+
+// mboot: unclear what Intern does
+stdout.Display("Intern: ", s2.Intern(), " ", s2.size, "\n");
+s2 = "bbaacc";
+stdout.Display("Intern: ", s2.Intern(), " ", s2.size, "\n");
+
+s2 = "bbaacc";
+stdout.Display("Index: ", s2.Index('a'), " ", s2, "\n");
+stdout.Display("RIndex: ", s2.ReverseIndex('a'), " ", s2, "\n");
+stdout.Display("Substr: ", s2.Substring(1,2), " ", s2, "\n");
+// stdout.Display("Index: ", s2.Index("a"), " ", s2, "\n"); // Error: Wrong type - "a"
+
+num = "1234";
+stdout.Display(num," ", num.toInteger(), "\n");
+stdout.Display(Type(num)," ", Type(num.toInteger()), "\n");
+num = 44;
+stdout.Display(Type(num)," ", Type(toString(num)), "\n");
+
+// SYMBOL
+// mboot: unclear what printName is for
+a = 5;
+\a.printName;
+stdout.Display(a, " ", \a, " ", \a.printName, "\n");
+
+a = \[];
+stdout.Display(a, " ", \a, " ", \a.printName, "\n");
+

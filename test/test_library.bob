@@ -1,0 +1,143 @@
+#! ../bin/bob
+
+# library testing
+# Objects
+
+// lets create a new obj and create a initialize method for it
+o1 = new Object;
+define o1.initialize(arg1, arg2 = 3 , arg3..) {
+	// note that the parser enforces the logical order of initialized arguments after un-initialized and dotdot arguments at the end
+
+	this.arg1 = arg1;
+	this.arg2 = arg2;
+	stdout.Display("you passed ", arg3.size,": arguments for arg3", "\n");
+	this.arg3 = nil;
+	if( arg3.size != 0) {
+		this.arg3 = arg3;
+	}
+	// even if the arg3 was not specified it wil be a [] (empty vertor) so we can still use it
+	this.arg4 = arg3;
+
+	this;
+}
+define o1.klak(a, b="b", c..) {
+	stdout.Display("args are: ", a, " ", b, " ", c,"\n");
+	this.Show();
+	return this.arg4.size;
+}
+
+// the current object wil not have any propery variables but it will hev the initialize method
+o1.Show();
+
+arg1 = 6;
+
+// so if we now create a new obj based on the current the initialize will get executed
+o2 = new o1( arg1, 8, 7,8,9,0);
+o2.Show();
+// note that although the property variables are inherited the initializer seems not but it is
+o22 = new o2(99);
+// the initializer gets called with the one mandatory argument
+stdout.Display("o22.klak(): ", o22.klak(5), "\n");
+o22.Show();
+
+// BUG?: show also inherited methods on new derived objects ?
+// no see Exists and ExistsLocally
+
+// as we specified a default for arg2 we dont have to use it when creating a new obj
+o3 = new o1( arg1);
+o3.Show();
+
+// we have o1 -> o2, o3; o2 -> o22 ;; so  o3.Class == o2.Class
+stdout.Display("o1: ", o1.Class(), "\n");
+stdout.Display("o2: ", o2.Class(), "\n");
+stdout.Display("o22: ", o22.Class(), "\n");
+stdout.Display("o3: ", o3.Class(), "\n");
+stdout.Display(o3.Class() == o2.Class(), "\n");
+
+// lets Clone a o4 from o22
+o4 = o22.Clone();
+o4.Show();
+stdout.Display("o22: ", o22.Class(), "\n");
+stdout.Display("o4: ", o4.Class(), "\n");
+
+// they are now of the same Class
+stdout.Display(o22.Class() == o4.Class(), "\n");
+
+// we can now modify each object instance individually
+o4.arg1 = 100;
+o4.Show();
+o22.Show();
+// o44 = o22.Clone(66); // clone cannot take arguments: runtime error: Error: Too many arguments - <CMethod-Clone>
+
+// for symbol we pass the literal reference as passing arg1 would pass its value not its name
+stdout.Display("name of var: ", \arg1, " value of var: ", arg1, "\n");
+
+// Exists looks on the whole inheritance tree all the way to the top
+// whereas ExistsLocally only looks at the diret object used and does not go up the tree
+// this is why we see the propery values as they are all local instances where as the methods may be up the tree also
+
+p1 = o22.Exists(\arg1);
+stdout.Display("does o22 have a arg1: ", p1, "\n");
+
+p1 = o22.ExistsLocally(\arg1);
+stdout.Display("does o22 locally have a arg1: ", p1, "\n");
+
+p2 = o22.Exists(\arg5);
+stdout.Display("does o22 have a arg5: ", p2, "\n");
+
+p3 = o22.Exists(\initialize);
+stdout.Display("does o22 have initialize: ", p3, "\n");
+
+p3 = o22.ExistsLocally(\initialize);
+stdout.Display("does o22 have initialize locally: ", p3, "\n");
+
+stdout.Display("does o22 have klak: ", o22.Exists(\klak), "\n");
+stdout.Display("does o22 have foo: ", o22.Exists(\foo), "\n");
+
+// i have not seen class variables or a way to see if the symbol is a method or a variable
+o22.arg4 = \[1,2,3,4,"a", \p3, nil];
+v1 = o22.klak(6, 6,8,9,10);
+stdout.Display("o22.klak(): ", v1," ", o22.arg4[5], "\n");
+
+// you must pass at least a empty [] reference as args
+// object "." "Send" "(" selectorSymbol ","" "[" args "]" ")" ";" .
+// args : [ arg [ "," arg ] ... ]
+v1 = o22.Send(\klak, \[6, "gg", 9,8,7,6]);
+stdout.Display("o22.klak(): ", v1," ", o22.arg4[5], "\n");
+
+Object.Show();
+// Method.Show(); // Error: Object <Type-Method> has no method - Show
+
+// decode a method back into assembly on the default out stream
+zz = o22.klak.Decode();
+stdout.Display(zz, "\n");
+
+// or open a file where to write the data to
+f1 = new File("bla.txt","w");
+stdout.Display(f1, "\n");
+
+zz = o22.klak.Decode(f1);
+stdout.Display(zz, "\n");
+
+// zz = o22.klak.Apply(); // Error: Too few arguments - <CMethod-Apply>
+// zz = o22.klak.Apply(1); //Error: Wrong type - 1
+// zz = o22.klak.Apply(\[1]); // Error: Too few arguments - <Method-klak>
+// zz = o22.klak.Apply(\[1, 2, 3, 4 ,5]); // Error: Object 1 has no property - arg4
+
+// apply the metod to a obj, with a list of args
+o2.Show();
+// mandatory are 3 arguments , what is the function of the second ?
+zz = o22.klak.Apply(o2,\[7,3,4,5,6,7,8,9]);
+stdout.Display(zz, "\n");
+
+zz = o22.klak.Apply(o2, \[3,4,7]);
+stdout.Display(zz, "\n");
+o22.Show();
+o2.Show();
+
+define f77(a) { stdout.Display("f77: ", a, "\n"); }
+f77(5);
+
+// unclear what the first 2 arguments should be
+a = 8;
+f77.Apply(1,2,\[3]);

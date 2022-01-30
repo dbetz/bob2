@@ -1,0 +1,17 @@
+#! ../bin/bob
+{}
+
+{
+	// a block by any other name does function properly
+	// be empty or with substance
+	// as blocks go so they do
+
+	local a;
+	local b = 3;
+	local d,e,f;
+
+	c = 6;
+}
+
+// no a nor b but c survived the tempest
+stdout.Display(c, "\n");
