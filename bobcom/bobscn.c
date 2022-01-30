@@ -239,6 +239,10 @@ static int rtoken(BobCompiler *c)
                             return T_MULEQ;
                         c->savedChar = ch;
                         return '*';
+        case '#':       while ((ch = getch(c)) != EOF)
+                            if (ch == '\n')
+                                break;
+                         break;
         case '/':       switch (ch = getch(c)) {
                         case '=':
                             return T_DIVEQ;
