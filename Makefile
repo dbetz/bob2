@@ -128,3 +128,8 @@ clean:	$(DIRS)
 	rm -rf $(BINDIR)
 	rm -rf $(LIBDIR)
 	rm -rf $(OBJDIR)
+	rm -f test/*.txt
+
+.PHONY: test
+test: all
+	( cd test; ./all_tests.sh )
